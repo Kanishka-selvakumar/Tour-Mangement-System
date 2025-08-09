@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourism Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS to set the font and hero background image */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+        .hero {
+            background-image: url('https://placehold.co/1920x1080/0d9488/ffffff?text=Explore+the+World');
+            background-size: cover;
+            background-position: center;
+        }
+        /* Modal styling */
+        .modal {
+            display: none;
+            /* Ensures the modal is completely hidden when not open */
+        }
+        .modal.open {
+            display: flex;
+            /* Flexbox to center the modal content */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-teal-600">Travelio</a>
+            
+            <div id="desktop-menu" class="hidden md:flex space-x-6 items-center">
+                <a href="#" class="text-gray-600 hover:text-teal-600 transition-colors">Home</a>
+                <a href="#packages-section" class="text-gray-600 hover:text-teal-600 transition-colors">Packages</a>
+                <a href="#" id="about-us-link" class="text-gray-600 hover:text-teal-600 transition-colors">About Us</a>
+                <a href="#" id="contact-link" class="text-gray-600 hover:text-teal-600 transition-colors">Contact</a>
+                <button id="login-button" class="bg-teal-600 text-white px-4 py-2 rounded-full font-medium hover:bg-teal-700 transition-colors shadow-lg">Login</button>
+            </div>
+            
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-teal-600 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-sm pb-4">
+            <a href="#" class="block px-4 py-2 text-gray-600 hover:text-teal-600 transition-colors">Home</a>
+            <a href="#packages-section" class="block px-4 py-2 text-gray-600 hover:text-teal-600 transition-colors">Packages</a>
+            <a href="#" id="mobile-about-us-link" class="block px-4 py-2 text-gray-600 hover:text-teal-600 transition-colors">About Us</a>
+            <a href="#" id="mobile-contact-link" class="block px-4 py-2 text-gray-600 hover:text-teal-600 transition-colors">Contact</a>
+            <button id="mobile-login-button" class="bg-teal-600 text-white w-full text-left px-4 py-2 rounded-full font-medium hover:bg-teal-700 transition-colors shadow-lg mt-2">Login</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero text-white h-screen flex items-center justify-center relative">
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="container mx-auto px-4 text-center z-10">
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4">Discover Your Next Adventure</h1>
+                <p class="text-xl md:text-2xl font-light mb-8">Unforgettable tours to the world's most breathtaking destinations.</p>
+                <div class="bg-white rounded-full p-2 max-w-xl mx-auto flex items-center shadow-lg">
+                    <input id="search-input" type="text" placeholder="Search for destinations..." class="w-full px-4 py-2 text-gray-800 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <button id="search-button" class="bg-teal-600 text-white p-3 rounded-full hover:bg-teal-700 transition-colors ml-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="packages-section" class="py-16 bg-gray-100">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-12">Featured Tour Packages</h2>
+                <div id="package-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2023 Travelio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal fixed inset-0 z-[999] bg-gray-900 bg-opacity-75 items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-8 max-w-sm w-full relative">
+            <button id="close-login-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-900">Login</h2>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="login-email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div class="mb-6">
+                    <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="login-password" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-md font-semibold hover:bg-teal-700 transition-colors">Sign In</button>
+            </form>
+            <p class="text-center mt-4 text-sm text-gray-600">
+                Don't have an account? <a href="#" id="switch-to-signup" class="text-teal-600 font-medium hover:underline">Create an account</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="signup-modal" class="modal fixed inset-0 z-[999] bg-gray-900 bg-opacity-75 items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full relative">
+            <button id="close-signup-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-900">Create an Account</h2>
+            <form id="signup-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input type="text" id="signup-name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                    </div>
+                    <div>
+                        <label for="signup-lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input type="text" id="signup-lastname" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="signup-email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div class="mb-4">
+                    <label for="signup-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <input type="text" id="signup-phone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div class="mb-4">
+                    <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="signup-password" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div class="mb-6">
+                    <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-md font-semibold hover:bg-teal-700 transition-colors">Sign Up</button>
+            </form>
+            <p class="text-center mt-4 text-sm text-gray-600">
+                Already have an account? <a href="#" id="switch-to-login" class="text-teal-600 font-medium hover:underline">Login here</a>
+            </p>
+        </div>
+    </div>
+
+
+    <div id="about-us-modal" class="modal fixed inset-0 z-[999] bg-gray-900 bg-opacity-75 items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-8 max-w-2xl w-full relative">
+            <button id="close-about-us-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4 text-center">About Us</h2>
+            <p class="text-gray-700 text-lg mb-4">
+                Welcome to ExploreEase – Your Ultimate Travel Companion!
+            </p>
+            <p class="text-gray-700 mb-4">
+                At ExploreEase, we believe that travel isn’t just about reaching a destination – it's about creating unforgettable memories along the way. Our Tourism Management System is designed to simplify your journey from planning to booking, helping you explore the world with ease and confidence.
+            </p>
+            <p class="text-gray-700 mb-4">
+                We offer a seamless platform for tourists to discover destinations, compare tour packages, book accommodations, and manage their entire trip in just a few clicks. Whether you’re a solo traveler, a family on vacation, or an adventure seeker, we provide customized options to suit your preferences and budget.
+            </p>
+            <p class="text-gray-700 mb-4">
+                With user-friendly navigation, real-time availability, secure booking, and dedicated customer support, ExploreEase aims to be your go-to travel assistant, 24/7.
+            </p>
+            <p class="text-gray-700 text-lg font-semibold">
+                Join thousands of happy travelers who trust ExploreEase to turn their travel dreams into reality. 🌍✨
+            </p>
+            <p class="text-gray-700 text-lg font-semibold mt-2">
+                Let’s make your next journey extraordinary.
+            </p>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal fixed inset-0 z-[999] bg-gray-900 bg-opacity-75 items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-8 max-w-sm w-full relative text-center">
+            <button id="close-contact-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Contact Us</h2>
+            <p class="text-gray-700 text-lg mb-2"><strong class="font-semibold">Email:</strong> kanishka.s.d.r@gmail.com</p>
+            <p class="text-gray-700 text-lg"><strong class="font-semibold">Phone:</strong> 9655635290</p>
+        </div>
+    </div>
+
+
+    <div id="details-modal" class="modal fixed inset-0 z-[999] bg-gray-900 bg-opacity-75 items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-8 max-w-xl w-full relative">
+            <button id="close-details-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="details-image" src="" alt="Tour Image" class="w-full h-64 object-cover rounded-xl mb-6">
+            <h2 id="details-name" class="text-3xl font-bold text-gray-900 mb-2"></h2>
+            <p id="details-description" class="text-gray-600 mb-4"></p>
+            <p class="text-2xl font-bold text-teal-600 mb-6"><span id="details-price"></span></p>
+            <button id="book-button" class="w-full bg-teal-600 text-white py-3 rounded-md font-semibold hover:bg-teal-700 transition-colors">Book Now</button>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="modal fixed inset-0 z-[1000] bg-gray-900 bg-opacity-75 items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-8 max-w-sm w-full relative text-center">
+            <button id="close-confirmation-modal-button" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <svg class="h-16 w-16 text-teal-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Trip Booked!</h2>
+            <p class="text-gray-600">Your trip has been successfully booked.</p>
+        </div>
+    </div>
+
+    <script>
+        let tourPackages = []; // This will hold the fetched data
+
+        function renderPackages(packages) {
+            const packageList = document.getElementById('package-list');
+            if (packageList) {
+                packageList.innerHTML = '';
+                if (packages.length === 0) {
+                    packageList.innerHTML = `<p class="col-span-3 text-center text-gray-600 text-lg">No packages found.</p>`;
+                    return;
+                }
+                packages.forEach(pkg => {
+                    packageList.innerHTML += `
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+                            <img src="${pkg.image}" alt="${pkg.name}" class="w-full h-48 object-cover">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold text-gray-900 mb-2">${pkg.name}</h3>
+                                <p class="text-gray-600 text-sm mb-4">${pkg.description}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-3xl font-extrabold text-teal-600">${pkg.price}</span>
+                                    <button class="view-details-button bg-teal-600 text-white font-medium px-6 py-3 rounded-full hover:bg-teal-700 transition-colors shadow-lg" data-package-id="${pkg.id}">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                console.error('Element with ID "package-list" not found.');
+            }
+        }
+
+        async function fetchPackages(query = '') {
+            const url = query ? `http://localhost:3000/api/packages?query=${query}` : 'http://localhost:3000/api/packages';
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                tourPackages = await response.json(); // Store fetched data globally
+                renderPackages(tourPackages);
+            } catch (error) {
+                console.error('Error fetching packages:', error);
+                const packageList = document.getElementById('package-list');
+                if (packageList) {
+                    packageList.innerHTML = `<p class="col-span-3 text-center text-red-500 text-lg">Failed to load packages. Please ensure the backend server is running.</p>`;
+                }
+            }
+        }
+
+        function toggleModal(modalId, open) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList[open ? 'add' : 'remove']('open');
+            }
+        }
+
+        function showDetailsModal(packageId) {
+            const pkg = tourPackages.find(p => p.id === parseInt(packageId));
+            if (pkg) {
+                document.getElementById('details-image').src = pkg.image;
+                document.getElementById('details-name').textContent = pkg.name;
+                document.getElementById('details-description').textContent = pkg.description;
+                document.getElementById('details-price').textContent = pkg.price;
+                // Add a data attribute to the book button to reference the package ID
+                document.getElementById('book-button').setAttribute('data-package-id', pkg.id);
+                toggleModal('details-modal', true);
+            }
+        }
+        
+        function showBookingConfirmation() {
+            toggleModal('details-modal', false); // Close the details modal first
+            toggleModal('confirmation-modal', true);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchPackages();
+
+            // Event listener for mobile menu toggle
+            document.getElementById('mobile-menu-button').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+
+            // Event listeners for login modal
+            document.getElementById('login-button').addEventListener('click', () => toggleModal('login-modal', true));
+            document.getElementById('mobile-login-button').addEventListener('click', () => toggleModal('login-modal', true));
+            document.getElementById('close-login-modal-button').addEventListener('click', () => toggleModal('login-modal', false));
+            document.getElementById('login-modal').addEventListener('click', e => e.target.id === 'login-modal' && toggleModal('login-modal', false));
+
+            // Event listener to switch from login to signup modal
+            document.getElementById('switch-to-signup').addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleModal('login-modal', false);
+                toggleModal('signup-modal', true);
+            });
+
+            // Event listener to switch from signup to login modal
+            document.getElementById('switch-to-login').addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleModal('signup-modal', false);
+                toggleModal('login-modal', true);
+            });
+            
+            // Event listeners for signup modal
+            document.getElementById('close-signup-modal-button').addEventListener('click', () => toggleModal('signup-modal', false));
+            document.getElementById('signup-modal').addEventListener('click', e => e.target.id === 'signup-modal' && toggleModal('signup-modal', false));
+
+
+            // Event listeners for about us modal
+            document.getElementById('about-us-link').addEventListener('click', e => { e.preventDefault(); toggleModal('about-us-modal', true); });
+            document.getElementById('mobile-about-us-link').addEventListener('click', e => { e.preventDefault(); toggleModal('about-us-modal', true); });
+            document.getElementById('close-about-us-modal-button').addEventListener('click', () => toggleModal('about-us-modal', false));
+            document.getElementById('about-us-modal').addEventListener('click', e => e.target.id === 'about-us-modal' && toggleModal('about-us-modal', false));
+
+            // Event listeners for contact modal
+            document.getElementById('contact-link').addEventListener('click', e => { e.preventDefault(); toggleModal('contact-modal', true); });
+            document.getElementById('mobile-contact-link').addEventListener('click', e => { e.preventDefault(); toggleModal('contact-modal', true); });
+            document.getElementById('close-contact-modal-button').addEventListener('click', () => toggleModal('contact-modal', false));
+            document.getElementById('contact-modal').addEventListener('click', e => e.target.id === 'contact-modal' && toggleModal('contact-modal', false));
+            
+            // Event listener for details modal
+            document.getElementById('close-details-modal-button').addEventListener('click', () => toggleModal('details-modal', false));
+            document.getElementById('details-modal').addEventListener('click', e => e.target.id === 'details-modal' && toggleModal('details-modal', false));
+
+            // Event listener for booking confirmation modal
+            document.getElementById('close-confirmation-modal-button').addEventListener('click', () => toggleModal('confirmation-modal', false));
+            document.getElementById('confirmation-modal').addEventListener('click', e => e.target.id === 'confirmation-modal' && toggleModal('confirmation-modal', false));
+            
+            // Event listener for "View Details" button using event delegation
+            document.getElementById('package-list').addEventListener('click', (e) => {
+                if (e.target.classList.contains('view-details-button')) {
+                    const packageId = e.target.getAttribute('data-package-id');
+                    showDetailsModal(packageId);
+                }
+            });
+            
+            // Event listener for the "Book Now" button in the details modal
+            document.getElementById('book-button').addEventListener('click', () => {
+                const packageId = document.getElementById('book-button').getAttribute('data-package-id');
+                // In a real application, you would send this booking to the backend
+                console.log(`Booking package with ID: ${packageId}`);
+                showBookingConfirmation();
+            });
+
+            // Event listener for search functionality
+            document.getElementById('search-button').addEventListener('click', () => {
+                const query = document.getElementById('search-input').value;
+                fetchPackages(query);
+            });
+            
+            // ====================================================================================
+            // Login/Signup API calls (Updated from previous version)
+            // ====================================================================================
+
+            // Event listener for Login form submission
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                try {
+                    const response = await fetch('http://localhost:3000/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        alert('Login successful! Welcome, ' + data.user.firstName);
+                        toggleModal('login-modal', false);
+                        // Here you can update your UI to show the user is logged in
+                    } else {
+                        alert('Login failed: ' + data.message);
+                    }
+                } catch (error) {
+                    alert('Error connecting to the server. Please ensure the backend is running and the port is correct.');
+                }
+            });
+
+            // Event listener for Signup form submission
+            document.getElementById('signup-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const firstName = document.getElementById('signup-name').value;
+                const lastName = document.getElementById('signup-lastname').value;
+                const email = document.getElementById('signup-email').value;
+                const phone = document.getElementById('signup-phone').value;
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm-password').value;
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+                
+                try {
+                    const response = await fetch('http://localhost:3000/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ firstName, lastName, email, phone, password })
+                    });
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        alert('Account created successfully! You can now log in.'); 
+                        toggleModal('signup-modal', false); 
+                        toggleModal('login-modal', true);
+                    } else {
+                        alert('Registration failed: ' + data.message);
+                    }
+                } catch (error) {
+                    alert('Error connecting to the server. Please ensure the backend is running and the port is correct.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
